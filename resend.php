@@ -1,12 +1,10 @@
 <?php
 
 /**
- * Plugin Name: Resend (Official)
+ * Plugin Name: Resend
  * Plugin URI: https://resend.com
  * Description: The best API to reach humans instead of spam folders. Build, test, and deliver transactional emails at scale.
- * Version: 0.1.0
- * Requires PHP: 8.1
- * Requires at least: 5.9
+ * Version: 1.0.0
  * Tested up to: 6.2
  * Author: Resend
  */
@@ -27,12 +25,27 @@ class Resend
         }
 
         add_filter('init', array($this, 'init'));
+
+        $this->settings = $this->load_settings();
     }
 
     public function init()
     {
-        add_action('admin_menu', array($this, 'register_options_page'));
+        // Initialise settings...
         add_action('admin_init', array($this, 'register_settings'));
+
+        // Add settings page to menu...
+        add_action('admin_menu', array($this, 'register_options_page'));
+
+        // Add settings link to plugin page...
+        add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'add_settings_link'));
+
+        add_action('wp_ajax_resend_test', array($this, 'send_test_email'));
+    }
+
+    public function load_settings()
+    {
+        return get_option('resend_options');
     }
 
     public function register_options_page()
@@ -46,9 +59,23 @@ class Resend
         );
     }
 
+    public function add_settings_link($links)
+    {
+        $settings_link = '<a href="options-general.php?page=resend">' . __('Settings', 'resend') . '</a>';
+        array_push($links, $settings_link);
+        return $links;
+    }
+
     public function options_page_html()
     {
         include RESEND_DIR . '/options-page.php';
+    }
+
+    public function send_test_email()
+    {
+        $response = wp_mail('jayanratna0@gmail.com', 'Resend Test: dev', 'This is a test message', array());
+
+        wp_die();
     }
 
     public function register_settings()
