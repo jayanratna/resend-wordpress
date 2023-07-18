@@ -24,14 +24,62 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
     $settings = get_option('resend_options');
 
     $content_type = 'text/plain';
+
+    if (empty($headers)) {
+        $headers = array();
+    } else {
+        if (!is_array($headers)) {
+            // Explode the headers out, so this function can take
+            // both string headers and an array of headers.
+            $tempHeaders = explode("\n", str_replace("\r\n", "\n", $headers));
+        } else {
+            $tempHeaders = $headers;
+        }
+
+        $headers = array();
+
+        if (!empty($tempHeaders)) {
+            foreach ((array) $tempHeaders as $header) {
+                list($name, $content) = explode(':', trim($header), 2);
+
+                $name = trim($name);
+                $content = trim($content);
+
+                switch (strtolower($name)) {
+                    case 'content-type':
+                        if (strpos($content, ';')) {
+
+                        } elseif (trim($content) !== '') {
+                            $content_type = trim($content);
+                        }
+                        break;
+                    default:
+                        // Add it to our grand headers array.
+                        $headers[trim($name)] = trim($content);
+                        break;
+                }
+            }
+        }
+    }
+
     $content_type = apply_filters('wp_mail_content_type', $content_type);
 
     $body = array(
         'from' => 'wordpress@resend.dev',
-        'to' => is_array($to) ? implode(',', $to) : $to,
+        'to' => is_array($to) ? $to : [$to],
         'subject' => $subject,
-        'text' => $message,
+        'html' => $content_type === 'text/html' ? $message : null,
+        'text' => $content_type === 'text/plain' ? $message : null,
     );
+
+    foreach ($attachments as $attachment) {
+        if (is_readable($attachment)) {
+            $body['attachments'][] = array(
+                'content' => base64_encode(file_get_contents($attachment)),
+                'filename' => basename($attachment)
+            );
+        }
+    }
 
     $args = array(
         'headers' => array(
@@ -49,7 +97,11 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
     }
 
     do_action('wp_mail_succeeded', array(
-
+        'to' => $body['to'],
+        'subject' => $body['subject'],
+        'message' => $body['html'] ?? $body['text'],
+        'headers' => $headers,
+        'attachments' => $body['attachments'] ?? null,
     ));
 
     return true;
