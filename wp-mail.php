@@ -40,15 +40,18 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
 
         if (!empty($tempHeaders)) {
             foreach ((array) $tempHeaders as $header) {
+                // Explode them out.
                 list($name, $content) = explode(':', trim($header), 2);
 
+                // Cleanup crew.
                 $name = trim($name);
                 $content = trim($content);
 
                 switch (strtolower($name)) {
                     case 'content-type':
                         if (strpos($content, ';')) {
-
+                            list($type, $charset_content) = explode(';', $content);
+                            $content_type = trim($type);
                         } elseif (trim($content) !== '') {
                             $content_type = trim($content);
                         }
