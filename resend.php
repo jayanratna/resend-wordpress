@@ -73,7 +73,7 @@ class Resend
 
     public function send_test_email()
     {
-        $response = wp_mail('jayanratna0@gmail.com', 'Resend Test: dev', 'This is a test message', array());
+        $response = wp_mail('onboarding@resend.dev', 'Resend Test: dev', 'This is a test message', array());
 
         wp_die();
     }
