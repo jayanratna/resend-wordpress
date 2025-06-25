@@ -1,0 +1,71 @@
+.resend-plugin-container {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen-Sans', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif;
+}
+
+.resend-plugin-container * {
+    box-sizing: border-box;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizelegibility;
+    -webkit-text-size-adjust:none;
+    -moz-text-size-adjust:none;
+    text-size-adjust:none
+}
+
+.resend-h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 28px;
+}
+
+.resend-button {
+    position: relative;
+    display: inline-flex;
+    padding: 0 12px;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    color: #000509e3;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 20px;
+    text-decoration: none;
+    height: 32px;
+    gap: 4px;
+    background-color: #00005506;
+    border: 1px solid #00002f26;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.resend-button:hover,
+.resend-button:focus {
+    background-color: #00002d17;
+    color: #000509e3;
+    outline: none;
+    box-shadow: none;
+}
+
+.resend-button.is-primary {
+    color: #fff;
+    background-color: #000;
+    border: 1px solid #000;
+}
+
+.resend-button.is-primary:hover {
+    background-color: #000000e6;
+    color: #fff;
+}
+
+.resend-input[type="text"] {
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 14px;
+    line-height: 20px;
+    min-height: 32px;
+    border-radius: 6px;
+}

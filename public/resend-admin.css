@@ -1,0 +1,109 @@
+.resend-start-container {
+    margin: 32px auto;
+    padding-left: 24px;
+    padding-right: 24px;
+    max-width: 768px;
+    width: 100%;
+}
+
+.resend-logo-container {
+    margin: 0 auto 16px;
+    padding: 16px 0;
+}
+
+.resend-logo {
+    height: 32px;
+}
+
+.resend-setup-steps-container {
+    position: relative;
+    margin: 0 auto;
+    padding: 16px 0;
+}
+
+.resend-setup-steps-container .only-completed {
+    display: none;
+}
+
+.resend-setup-steps-gradient {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(180deg, transparent 0, #00002f26 10%, #00002f26 90%, transparent 100%);
+}
+
+.resend-setup-steps-step-container {
+    position: relative;
+    padding-left: 24px;
+}
+
+.resend-setup-steps-step-container.is-disabled,
+.resend-setup-steps-step-container.is-complete {
+    pointer-events: none;
+    user-select: none;
+}
+
+.resend-setup-steps-step-container.is-disabled > .resend-setup-steps-spot > * {
+    border-color: #00062e32;
+}
+.resend-setup-steps-step-container.is-disabled > .resend-setup-steps-content {
+    opacity: 0.4;
+}
+
+.resend-setup-steps-step-container.is-complete .only-completed {
+    display: block;
+}
+.resend-setup-steps-step-container.is-complete > .resend-setup-steps-spot > * {
+    border-color: rgba(0, 113, 63, 0.87);
+}
+.resend-setup-steps-step-container.is-complete > .resend-setup-steps-content {
+    background-image: linear-gradient(to right in oklab, rgba(0, 145, 64, 0.443) 0px, rgba(0, 0, 0, 0) 100%);
+}
+.resend-setup-steps-step-container.is-complete > .resend-setup-steps-content > div > div {
+    background-image: linear-gradient(to right in oklab, rgba(0, 168, 56, 0.16) 0px, rgba(0, 192, 64, 0.016) 50%, rgba(0, 192, 64, 0.016) 100%);
+}
+.resend-setup-steps-step-container.is-complete > .resend-setup-steps-content {
+    background-image: linear-gradient(to right in oklab, rgba(0, 145, 64, 0.443) 0px, rgba(0, 0, 0, 0) 100%);
+}
+.resend-setup-steps-step-container.is-complete .resend-setup-steps-desc {
+    margin-bottom: 0;
+}
+
+.resend-setup-steps-spot {
+    display: flex;
+    position: absolute;
+    left: -10px;
+    top: 29px;
+    width: 21px;
+    height: 21px;
+    border-radius: 9999px;
+    z-index: 10;
+    background-color: #f0f0f1;
+}
+
+.resend-setup-steps-spot > * {
+    margin: auto;
+    width: 12px;
+    height: 12px;
+    border: 2px solid;
+    border-radius: 9999px;
+}
+
+.resend-setup-steps-desc {
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+.resend-setup-steps-content {
+    padding: 2px;
+    border-radius: 12px;
+}
+.resend-setup-steps-content > div {
+    background-color: #f0f0f1;
+    border-radius: 10px;
+}
+.resend-setup-steps-content > div > div {
+    padding: 24px;
+    border-radius: 10px;
+}
