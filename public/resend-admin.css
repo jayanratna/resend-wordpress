@@ -63,9 +63,6 @@
 .resend-setup-steps-step-container.is-complete > .resend-setup-steps-content > div > div {
     background-image: linear-gradient(to right in oklab, rgba(0, 168, 56, 0.16) 0px, rgba(0, 192, 64, 0.016) 50%, rgba(0, 192, 64, 0.016) 100%);
 }
-.resend-setup-steps-step-container.is-complete > .resend-setup-steps-content {
-    background-image: linear-gradient(to right in oklab, rgba(0, 145, 64, 0.443) 0px, rgba(0, 0, 0, 0) 100%);
-}
 .resend-setup-steps-step-container.is-complete .resend-setup-steps-desc {
     margin-bottom: 0;
 }
@@ -93,6 +90,7 @@
 .resend-setup-steps-desc {
     margin-top: 0;
     margin-bottom: 16px;
+    color: rgba(0, 7, 20, 0.624);
 }
 
 .resend-setup-steps-content {

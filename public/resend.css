@@ -11,6 +11,18 @@
     text-size-adjust:none
 }
 
+.resend-plugin-container a {
+    color: rgba(0, 7, 20, 0.624);
+    border-bottom: 1px dashed rgba(0, 5, 29, 0.455);
+    text-decoration: none;
+}
+.resend-plugin-container a:hover {
+    border-color: rgb(0, 144, 255);
+}
+.resend-plugin-container a:focus {
+    box-shadow: none;
+}
+
 .resend-h3 {
     margin-top: 0;
     margin-bottom: 8px;
@@ -58,14 +70,77 @@
 
 .resend-button.is-primary:hover {
     background-color: #000000e6;
+    border-color: #000000e6;
     color: #fff;
 }
 
-.resend-input[type="text"] {
+.resend-input[type="text"],
+.resend-input[type="password"] {
     padding-left: 8px;
     padding-right: 8px;
     font-size: 14px;
     line-height: 20px;
     min-height: 32px;
     border-radius: 6px;
+    border: 1px solid rgba(0, 6, 46, 0.196);
+    box-shadow: 0px 0px 0px 0px rgba(0, 6, 46, 0.06);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.resend-input[type="text"]:focus,
+.resend-input[type="password"]:focus {
+    outline: none;
+    box-shadow: 0px 0px 0px 2px rgba(0, 6, 46, 0.1);
+    border: 1px solid rgba(0, 6, 46, 0.196);
+}
+
+.resend-alert {
+    display: flex;
+    align-items: center;
+    margin: 0 0 24px;
+    padding: 12px 16px;
+    gap: 8px;
+    background-image: linear-gradient(90deg, rgba(0, 158, 255, 0.165) 0px, rgba(0, 158, 255, 0) 40%);
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 147, 255, 0.24);
+    border-radius: 8px;
+}
+.resend-alert.is-danger {
+    background-image: linear-gradient(90deg, rgba(243, 0, 13, 0.08) 0px, rgba(243, 0, 13, 0) 40%);
+    border-color: rgba(248, 0, 4, 0.26);
+}
+.resend-alert.is-success {
+    background-image: linear-gradient(90deg, rgba(0, 164, 51, 0.098) 0px, rgba(0, 164, 51, 0) 40%);
+    border-color: rgba(0, 150, 60, 0.32);
+}
+
+.resend-alert .resend-alert-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    align-self: flex-start;
+    color: rgba(0, 109, 203, 0.95);
+}
+.resend-alert .resend-alert-icon > svg {
+    width: 20px;
+    height: 20px;
+}
+.resend-alert.is-danger .resend-alert-icon {
+    color: rgba(210, 82, 82, 0.95);
+}
+.resend-alert.is-success .resend-alert-icon {
+    color: rgba(0, 164, 51, 0.8);
+}
+
+.resend-alert p {
+    margin: 0;
+    padding: 0;
+}
+
+.resend-alert-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(0, 5, 9, 0.89);
 }

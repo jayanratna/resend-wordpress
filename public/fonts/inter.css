@@ -9,6 +9,14 @@
 @font-face {
     font-family: 'Inter';
     font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url("https://rsms.me/inter/font-files/Inter-Medium.woff2?v=4.1") format("woff2");
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
     font-weight: 600;
     font-display: swap;
     src: url("https://rsms.me/inter/font-files/Inter-SemiBold.woff2?v=4.1") format("woff2");

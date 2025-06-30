@@ -11,8 +11,8 @@ class Resend
     {
         $args = apply_filters('resend_view_arguments', $args, $name);
 
-        foreach ($args as $key => $value) {
-            //
+        foreach ($args as $key => $val) {
+            $$key = $val;
         }
 
         $file = RESEND__PLUGIN_DIR . 'views/' . basename($name) . '.php';
@@ -37,5 +37,14 @@ class Resend
     public static function get_api_key()
     {
         return apply_filters('resend_get_api_key', get_option('resend_api_key'));
+    }
+
+    public static function verify_key($key)
+    {
+        if (strpos($key, 're_') !== 0) {
+            return 'invalid';
+        }
+
+        return 'valid';
     }
 }

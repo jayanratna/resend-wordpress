@@ -6,6 +6,8 @@ class Resend_Admin
 
     private static $initiated = false;
 
+    private static $notices = array();
+
     public static function init()
     {
         if (! self::$initiated) {
@@ -104,17 +106,37 @@ class Resend_Admin
 
     public static function display_start_page()
     {
+        $api_key = Resend::get_api_key();
+
+        if ($api_key) {
+            self::display_configuration_page();
+            return;
+        }
+
         Resend::view('start');
     }
 
     public static function display_stats_page()
     {
+        delete_option('resend_api_key');
+
         Resend::view('stats');
     }
 
     public static function display_configuration_page()
     {
-        Resend::view('config');
+        Resend::view('config', compact('notices'));
+    }
+
+    public static function display_status()
+    {
+        if (! empty(self::$notices)) {
+            foreach (self::$notices as $index => $type) {
+                Resend::view('notice', compact('type'));
+
+                unset(self::$notices[$index]);
+            }
+        }
     }
 
     /**
@@ -161,13 +183,27 @@ class Resend_Admin
 
         if (empty($new_key)) {
             if (! empty($old_key)) {
-                // Delete old key
+                delete_option('resend_api_key');
             }
+            self::$notices['status'] = 'new-key-empty';
         } elseif ($new_key != $old_key) {
-            // Save new key
+            self::save_key($new_key);
         }
 
         return true;
+    }
+
+    public static function save_key($api_key)
+    {
+        $key_status = Resend::verify_key($api_key);
+
+        if ($key_status === 'valid') {
+            update_option('resend_api_key', $api_key);
+
+            self::$notices['status'] = 'new-key-valid';
+        } else {
+            self::$notices['status'] = 'new-key-invalid';
+        }
     }
 
     public static function plugin_action_links($links, $file)
