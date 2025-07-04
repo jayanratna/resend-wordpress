@@ -16,6 +16,8 @@ class Resend_Admin
 
         if (isset($_POST['action']) && $_POST['action'] == 'enter-key') {
             self::enter_api_key();
+        } elseif (isset($_POST['action']) && $_POST['action'] == 'send-test') {
+            self::send_test_email();
         }
     }
 
@@ -125,16 +127,19 @@ class Resend_Admin
 
     public static function display_configuration_page()
     {
-        Resend::view('config', compact('notices'));
+        Resend::view('config');
     }
 
     public static function display_status()
     {
         if (! empty(self::$notices)) {
             foreach (self::$notices as $index => $type) {
-                Resend::view('notice', compact('type'));
+                if (is_object($type)) {
 
-                unset(self::$notices[$index]);
+                } else {
+                    Resend::view('notice', compact('type'));
+                    unset(self::$notices[$index]);
+                }
             }
         }
     }
@@ -148,16 +153,39 @@ class Resend_Admin
 
         if (current_user_can('manage_options')) {
             if (! Resend::get_api_key() || (isset($_GET['view']) && $_GET['view'] == 'start')) {
+                // Setup page
+                $current_screen->add_help_tab(
+                    array(
+                        'id' => 'overview',
+                        'title' => __('Overview', 'resend'),
+                        'content' =>
+                            '<p>' . esc_html__('Resend is the best way to reach humans instead of spam folders. Deliver transactional and marketing emails at scale.', 'resend') . '</p>' .
+                            '<p>' . esc_html__('On this page, you are able to connect Resend to your site.', 'resend') . '</p>',
+                    )
+                );
+
+                $current_screen->add_help_tab(
+                    array(
+                        'id' => 'setup-signup',
+                        'title' => __('New to Resend', 'resend'),
+                        'content' =>
+                            '<p>' . esc_html__('You need to enter an API key to connect Resend to your site.', 'resend') . '</p>' .
+                            '<p>' . sprintf(__('Sign up for an account on %s to get an API key.', 'resend'), '<a href="https://resend.com/home" target="_blank">Resend.com</a>') . '</p>',
+
+                    )
+                );
             } elseif (isset($_GET['view']) && $_GET['view'] == 'stats') {
             } else {
                 // Configuration page
-                $current_screen->add_help_tab(array(
-                    'id' => 'overview',
-                    'title' => __('Overview', 'resend'),
-                    'content' =>
-                        '<p>' . esc_html__('Resend is the best way to reach humans instead of spam folders. Deliver transactional and marketing emails at scale.', 'resend') . '</p>' .
-                        '<p>' . esc_html__('On this page, you are able to update your Resend settings and view your email history.', 'resend') . '</p>',
-                ));
+                $current_screen->add_help_tab(
+                    array(
+                        'id' => 'overview',
+                        'title' => __('Overview', 'resend'),
+                        'content' =>
+                            '<p>' . esc_html__('Resend is the best way to reach humans instead of spam folders. Deliver transactional and marketing emails at scale.', 'resend') . '</p>' .
+                            '<p>' . esc_html__('On this page, you are able to update your Resend settings and view your email history.', 'resend') . '</p>',
+                    )
+                );
             }
         }
 
@@ -204,6 +232,38 @@ class Resend_Admin
         } else {
             self::$notices['status'] = 'new-key-invalid';
         }
+    }
+
+    public static function send_test_email()
+    {
+        if (! current_user_can('manage_options')) {
+            return;
+        }
+
+        if (! wp_verify_nonce($_POST['_wpnonce'], self::NONCE)) {
+            return false;
+        }
+
+        if (isset($_POST['email']) && is_email($_POST['email'])) {
+            $to = sanitize_email($_POST['email']);
+        } else {
+            self::$notices['status'] = 'test-email-not-set';
+            return;
+        }
+
+        $subject = 'Resend Test: ' . html_entity_decode(get_bloginfo('name'));
+        $message = 'This is a test email sent using the Resend plugin.';
+        $headers = array();
+
+        $response = wp_mail($to, $subject, $message, $headers);
+
+        if ($response !== false) {
+            self::$notices['status'] = 'test-email-sent';
+        } else {
+            self::$notices['status'] = 'test-email-failed';
+        }
+
+        return true;
     }
 
     public static function plugin_action_links($links, $file)

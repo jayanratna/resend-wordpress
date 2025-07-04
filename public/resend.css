@@ -32,7 +32,8 @@
     line-height: 28px;
 }
 
-.resend-button {
+.resend-button,
+a.resend-button {
     position: relative;
     display: inline-flex;
     padding: 0 12px;
@@ -46,17 +47,26 @@
     line-height: 20px;
     text-decoration: none;
     height: 32px;
-    gap: 4px;
+    gap: 6px;
     background-color: #00005506;
     border: 1px solid #00002f26;
-    border-radius: 6px;
+    border-radius: 12px;
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.resend-button svg {
+    opacity: 0.7;
+    width: 16px;
+    height: 16px;
+}
+
 .resend-button:hover,
-.resend-button:focus {
+a.resend-button:hover,
+.resend-button:focus,
+a.resend-button:focus {
     background-color: #00002d17;
+    border-color: #00002f26;
     color: #000509e3;
     outline: none;
     box-shadow: none;
@@ -74,19 +84,31 @@
     color: #fff;
 }
 
+.resend-label {
+    display: flex;
+    margin-bottom: 8px;
+    color: rgb(51, 51, 51);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+}
+
 .resend-input[type="text"],
+.resend-input[type="email"],
 .resend-input[type="password"] {
-    padding-left: 8px;
-    padding-right: 8px;
+    padding-left: 12px;
+    padding-right: 12px;
     font-size: 14px;
     line-height: 20px;
+    width: 100%;
     min-height: 32px;
-    border-radius: 6px;
-    border: 1px solid rgba(0, 6, 46, 0.196);
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
     box-shadow: 0px 0px 0px 0px rgba(0, 6, 46, 0.06);
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .resend-input[type="text"]:focus,
+.resend-input[type="email"]:focus,
 .resend-input[type="password"]:focus {
     outline: none;
     box-shadow: 0px 0px 0px 2px rgba(0, 6, 46, 0.1);
@@ -102,7 +124,7 @@
     background-image: linear-gradient(90deg, rgba(0, 158, 255, 0.165) 0px, rgba(0, 158, 255, 0) 40%);
     background-clip: padding-box;
     border: 1px solid rgba(0, 147, 255, 0.24);
-    border-radius: 8px;
+    border-radius: 16px;
 }
 .resend-alert.is-danger {
     background-image: linear-gradient(90deg, rgba(243, 0, 13, 0.08) 0px, rgba(243, 0, 13, 0) 40%);
@@ -143,4 +165,40 @@
     font-size: 14px;
     font-weight: 500;
     color: rgba(0, 5, 9, 0.89);
+}
+
+.resend-card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+.resend-card {
+    border: 1px solid rgba(0, 0, 47, 0.15);
+    border-radius: 24px;
+}
+
+.resend-card .resend-card-header {
+    padding: 16px 16px 0;
+}
+
+.resend-card .resend-card-title {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+}
+
+.resend-card .resend-card-content {
+    display: flex;
+    padding: 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.resend-card-content p {
+    margin-top: 0;
+    margin-bottom: 0;
 }

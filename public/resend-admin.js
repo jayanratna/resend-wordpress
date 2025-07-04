@@ -34,3 +34,21 @@ function resendCompleteKeyStep() {
     enterKeyStep.classList.remove("is-disabled");
     enterKeyStepAction.classList.add("is-primary");
 }
+
+function resendTogglePassword(element, inputId) {
+    const input = document.getElementById(inputId);
+    console.log(element);
+
+    const showIcon = element.querySelector("#show-password");
+    const hideIcon = element.querySelector("#hide-password");
+
+    if (input.type === "password") {
+        input.type = "text";
+        showIcon.style.display = "none";
+        hideIcon.style.display = "inline-flex";
+    } else {
+        input.type = "password";
+        showIcon.style.display = "inline-flex";
+        hideIcon.style.display = "none";
+    }
+}

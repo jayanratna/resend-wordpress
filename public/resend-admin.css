@@ -1,18 +1,30 @@
-.resend-start-container {
-    margin: 32px auto;
+.resend-start-container,
+.resend-config-container {
+    margin: 0 auto;
+    padding-top: 32px;
+    padding-bottom: 32px;
     padding-left: 24px;
     padding-right: 24px;
-    max-width: 768px;
     width: 100%;
+}
+.resend-start-container {
+    max-width: 768px;
+}
+.resend-config-container {
+    max-width: 768px;
 }
 
 .resend-logo-container {
+    display: flex;
     margin: 0 auto 16px;
     padding: 16px 0;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
 }
 
 .resend-logo {
-    height: 32px;
+    height: 20px;
 }
 
 .resend-setup-steps-container {
@@ -95,13 +107,13 @@
 
 .resend-setup-steps-content {
     padding: 2px;
-    border-radius: 12px;
+    border-radius: 24px;
 }
 .resend-setup-steps-content > div {
     background-color: #f0f0f1;
-    border-radius: 10px;
+    border-radius: 22px;
 }
 .resend-setup-steps-content > div > div {
     padding: 24px;
-    border-radius: 10px;
+    border-radius: 22px;
 }

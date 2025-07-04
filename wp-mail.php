@@ -21,7 +21,15 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
         return $pre_wp_mail;
     }
 
-    $settings = get_option('resend_options');
+    if (isset($atts['to'])) {
+        $to = $atts['to'];
+    }
+
+    if (! is_array($to)) {
+        $to = explode(',', $to);
+    }
+
+    $api_key = Resend::get_api_key();
 
     $content_type = 'text/plain';
 
@@ -88,13 +96,15 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
         'headers' => array(
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
-            'Authorization' => 'Bearer ' . $settings['resend_api_key'],
+            'Authorization' => 'Bearer ' . $api_key,
         ),
+        'user-agent' => 'resend-wordpress/' . get_bloginfo('version'),
         'body' => wp_json_encode($body),
     );
+
     $response = wp_remote_post('https://api.resend.com/emails', $args);
 
-    if (is_wp_error($response)) {
+    if (is_wp_error($response) || 200 != wp_remote_retrieve_response_code($response)) {
         do_action('wp_mail_failed', new WP_Error('wp_mail_failed'));
         return false;
     }
