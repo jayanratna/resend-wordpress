@@ -1,1 +1,0 @@
-<p>To start sending emails with Resend, <a href="https://resend.com/api-keys" target="_blank" rel="noopener noreferrer">create a new API key</a> with the name <strong><?php echo get_bloginfo('name'); ?></strong> and <strong>sending access</strong> only permission.</p>

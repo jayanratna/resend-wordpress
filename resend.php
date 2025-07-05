@@ -1,134 +1,53 @@
 <?php
 
 /**
+ * @package Resend
+ */
+/**
  * Plugin Name: Resend
  * Plugin URI: https://resend.com
  * Description: The best API to reach humans instead of spam folders. Build, test, and deliver transactional emails at scale.
  * Version: 1.0.0
- * Tested up to: 6.2
+ * Requires at least: 5.8
+ * Requires PHP: 7.2
  * Author: Resend
+ * Author URI: https://resend.com
+ * Text Domain: resend
  */
 
-/**
- * Resend for Wordpress
- */
-class Resend
-{
-    public $settings;
+// Make sure we don't expose any info if called directly
+if (! function_exists('add_action')) {
+    echo 'Hi there! I\'m just a plugin, not much I can do when called directly.';
+    exit;
+}
 
-    public static $RESEND_DIR = __DIR__;
+define('RESEND_VERSION', '1.0.0');
+define('RESEND__PLUGIN_DIR', plugin_dir_path(__FILE__));
 
-    public function __construct()
+if (function_exists('wp_mail')) {
+    function wp_mail_already_declared_notice()
     {
-        if (! defined('RESEND_DIR')) {
-            define('RESEND_DIR', self::$RESEND_DIR);
-        }
+        $class = 'notice notice-error';
+        $message = __('Resend is active, but something else is blocking it from sending emails. Another plugin or custom code is taking over email handling (wp_mail). To use Resend, you\'ll need to disable the conflict.', 'resend');
 
-        add_filter('init', array($this, 'init'));
-
-        $this->settings = $this->load_settings();
+        printf('<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), esc_html($message));
     }
 
-    public function init()
-    {
-        // Initialise settings...
-        add_action('admin_init', array($this, 'register_settings'));
+    add_action('admin_notices', 'wp_mail_already_declared_notice');
+}
 
-        // Add settings page to menu...
-        add_action('admin_menu', array($this, 'register_options_page'));
+register_activation_hook(__FILE__, array('Resend', 'plugin_activation'));
+register_deactivation_hook(__FILE__, array('Resend', 'plugin_deactivation'));
 
-        // Add settings link to plugin page...
-        add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'add_settings_link'));
+require_once RESEND__PLUGIN_DIR . 'class.resend.php';
 
-        add_action('wp_ajax_resend_test', array($this, 'send_test_email'));
-    }
+add_action('init', array('Resend', 'init'));
 
-    public function load_settings()
-    {
-        return get_option('resend_options');
-    }
-
-    public function register_options_page()
-    {
-        add_options_page(
-            'Resend Settings',
-            'Resend',
-            'manage_options',
-            'resend',
-            array($this, 'options_page_html')
-        );
-    }
-
-    public function add_settings_link($links)
-    {
-        $settings_link = '<a href="options-general.php?page=resend">' . __('Settings', 'resend') . '</a>';
-        array_push($links, $settings_link);
-        return $links;
-    }
-
-    public function options_page_html()
-    {
-        include RESEND_DIR . '/options-page.php';
-    }
-
-    public function send_test_email()
-    {
-        $response = wp_mail('onboarding@resend.dev', 'Resend Test: dev', 'This is a test message', array());
-
-        wp_die();
-    }
-
-    public function register_settings()
-    {
-        // Register new settings for "resend" page.
-        register_setting('resend', 'resend_options', array($this, 'validate_fields'));
-
-        add_settings_section(
-            'resend_section_developers',
-            __('Developers', 'resend'),
-            array($this, 'resend_section_developers_callback'),
-            'resend'
-        );
-
-        add_settings_field(
-            'resend_api_key',
-            __('API Key', 'resend'),
-            array($this, 'resend_api_key_callback'),
-            'resend',
-            'resend_section_developers',
-            array(
-                'label_for' => 'resend_api_key',
-                'class' => 'resend_row',
-                'resend_custom_data' => 'custom'
-            )
-        );
-    }
-
-    public function validate_fields($data)
-    {
-        if ($data['resend_api_key'] == '') {
-            add_settings_error('resend_messages', 'no-api-key', __('An API key is required', 'resend'), 'error');
-            return false;
-        }
-
-        return $data;
-    }
-
-    public function resend_section_developers_callback()
-    {
-        include RESEND_DIR . '/settings/resend-section-developers.php';
-    }
-
-    public function resend_api_key_callback($args)
-    {
-        include RESEND_DIR . '/settings/resend-api-key.php';
-    }
+if (is_admin()) {
+    require_once RESEND__PLUGIN_DIR . 'class.resend-admin.php';
+    add_action('init', array('Resend_Admin', 'init'));
 }
 
 if (! function_exists('wp_mail')) {
-    $resend = new Resend();
-
-    if (is_array($resend->settings)) {
-        include RESEND_DIR . '/wp-mail.php';
-    }
+    include RESEND__PLUGIN_DIR . 'wp-mail.php';
 }
