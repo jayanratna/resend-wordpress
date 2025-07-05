@@ -51,4 +51,12 @@ if (! isset($type)) {
         <p class="resend-alert-text"><?php esc_html_e('Failed to send a test email.', 'resend'); ?></p>
     </div>
 
+<?php elseif ($type === 'resend-error') : ?>
+    <div class="resend-alert is-danger">
+        <span class="resend-alert-icon">
+            <?php Resend::view('icon', array('type' => 'x-circle')); ?>
+        </span>
+        <p class="resend-alert-text"><?php esc_html_e($message, 'resend'); ?></p>
+    </div>
+
 <?php endif; ?>

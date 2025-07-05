@@ -130,14 +130,35 @@ class Resend_Admin
         Resend::view('config');
     }
 
+    public static function add_status($message, $type = 'resend-error')
+    {
+        self::$notices['status'] = [
+            'type' => $type,
+            'message' => $message
+        ];
+    }
+
     public static function display_status()
     {
         if (! empty(self::$notices)) {
             foreach (self::$notices as $index => $type) {
-                if (is_object($type)) {
+                if (is_array($type)) {
+                    $message = '';
 
+                    if (isset($type['message'])) {
+                        $rawMessage = is_array($type['message']) && isset($type['message']['message']) ? $type['message']['message'] : $type['message'];
+                        $message = wp_kses($rawMessage, array());
+                    }
+
+                    if (isset($type['type'])) {
+                        $type = wp_kses($type['type'], array());
+                        Resend::view('notice', compact('type', 'message'));
+
+                        unset(self::$notices[$index]);
+                    }
                 } else {
                     Resend::view('notice', compact('type'));
+
                     unset(self::$notices[$index]);
                 }
             }
@@ -260,7 +281,7 @@ class Resend_Admin
         if ($response !== false) {
             self::$notices['status'] = 'test-email-sent';
         } else {
-            self::$notices['status'] = 'test-email-failed';
+            // self::$notices['status'] = 'test-email-failed';
         }
 
         return true;

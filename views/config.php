@@ -1,5 +1,6 @@
 <?php
-
+$current_user = wp_get_current_user();
+$current_user_email = $current_user->user_email;
 ?>
 <div class="resend-plugin-container">
     <div class="resend-config-container">
@@ -54,7 +55,7 @@
                         <input type="hidden" name="action" value="send-test">
                         <div>
                             <label for="test_email" class="resend-label"><?php esc_html_e('Email address', 'resend'); ?></label>
-                            <input id="test_email" name="email" type="email" class="resend-input" autocomplete="email" required>
+                            <input id="test_email" name="email" type="email" class="resend-input" value="<?php esc_attr_e($current_user_email); ?>" autocomplete="email" required>
                         </div>
                         <div style="margin-top: 16px;">
                             <input type="submit" class="resend-button is-primary" value="<?php esc_attr_e('Send test email', 'resend') ?>">
